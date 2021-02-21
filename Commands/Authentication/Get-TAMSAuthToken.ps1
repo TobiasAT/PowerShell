@@ -21,9 +21,7 @@ function Get-TAMSAuthToken
 	[string]$PermissionType,	
 	[switch]$ReturnAuthHeader
 	
-	)
-	
-	
+	)	
 	
 	DynamicParam{
         $AttrCollection = new-object System.Collections.ObjectModel.Collection[System.Attribute]
@@ -56,7 +54,7 @@ function Get-TAMSAuthToken
 		
 		
 		if( $PermissionType -eq 'Delegated' )	
-		{	
+        {	
 			if( (get-command Show-TAAuthWindow -ErrorAction SilentlyContinue).Count -eq 0 )
 			{  Write-Error 'Command Show-TAAuthWindow is required.'; Write-Information 'Please download the command from my PowerShell Repository at https://github.com/TobiasAT/PowerShell.'; return }
 								
@@ -100,9 +98,9 @@ function Get-TAMSAuthToken
 						client_id = $AppId
 						client_assertion = $AuthJWT
 						client_assertion_type = 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer'
-						'redirect_uri' = $PSBoundParameters.AppRedirectUri
+						redirect_uri = $PSBoundParameters.AppRedirectUri
 						grant_type = 'authorization_code'
-						'code' = $AuthCode
+						code = $AuthCode
 					}
 				}
 			} else
@@ -124,9 +122,9 @@ function Get-TAMSAuthToken
 				client_id = $AppId
 				client_secret = $ClientSecret
 				scope = $AuthScope 
-				code = $AuthCode
-				grant_type = 'authorization_code'
 				redirect_uri = $PSBoundParameters.AppRedirectUri
+				grant_type = 'authorization_code'				
+				code = $AuthCode
 				}				
 			}		
 		}
