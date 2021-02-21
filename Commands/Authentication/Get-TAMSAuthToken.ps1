@@ -119,12 +119,12 @@ function Get-TAMSAuthToken
 			}
 			else
 			{	$Body = @{
-				client_id = $AppId
-				client_secret = $ClientSecret
-				scope = $AuthScope 
-				redirect_uri = $PSBoundParameters.AppRedirectUri
-				grant_type = 'authorization_code'				
-				code = $AuthCode
+					client_id = $AppId
+					client_secret = $ClientSecret
+					scope = $AuthScope 
+					redirect_uri = $PSBoundParameters.AppRedirectUri
+					grant_type = 'authorization_code'				
+					code = $AuthCode
 				}				
 			}		
 		}
