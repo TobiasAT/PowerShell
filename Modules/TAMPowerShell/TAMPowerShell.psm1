@@ -7,6 +7,8 @@
     Receives an authentication token from Microsoft APIs.
     Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/Get-TAMSAuthToken.md.
 #> 
+
+
 function Get-TAMSAuthToken
 { param( 
 	[Parameter(Mandatory=$true, ParameterSetName = 'ClientSecret')][string]$ClientSecret,
@@ -120,12 +122,12 @@ function Get-TAMSAuthToken
 			}
 			else
 			{	$Body = @{
-				client_id = $AppId
-				client_secret = $ClientSecret
-				scope = $AuthScope 
-				redirect_uri = $PSBoundParameters.AppRedirectUri
-				grant_type = 'authorization_code'				
-				code = $AuthCode
+					client_id = $AppId
+					client_secret = $ClientSecret
+					scope = $AuthScope 
+					redirect_uri = $PSBoundParameters.AppRedirectUri
+					grant_type = 'authorization_code'				
+					code = $AuthCode
 				}				
 			}		
 		}
@@ -141,6 +143,7 @@ function Get-TAMSAuthToken
 	}
 
 }
+
 
 #EndRegion Get-TAMSAuthToken
 
