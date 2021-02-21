@@ -43,8 +43,8 @@ To get information from Microsoft APIs an authentication token is required. The 
 - An existing Azure App Registration 
 - Client secret key or certificate added to the App Registration 
 - Application or Delegated permissions to the API
-- Command [New-TAMSAuthJWT](/Documentation/New-TAMSAuthJWT.md)  
-- Command [Show-TAAuthWindow](/Documentation/Show-TAAuthWindow.md)  
+- Command [New-TAMSAuthJWT](/Documentation/New-TAMSAuthJWT.md) or [TAMPowerShell module](/Documentation/Module/TAMPowerShell.md)   
+- Command [Show-TAAuthWindow](/Documentation/Show-TAAuthWindow.md) or [TAMPowerShell module](/Documentation/Module/TAMPowerShell.md)   
   
 
 
