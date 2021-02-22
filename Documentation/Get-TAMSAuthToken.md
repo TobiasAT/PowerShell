@@ -75,7 +75,7 @@ To get information from Microsoft APIs an authentication token is required. The 
 
 ## TAM365 REFERENCES
 
-[Informationen von Microsoft  Graph beziehen | TAM365 Blog](https://blog.topedia.com/?p=6680) (in German)  
+[Informationen über Microsoft Graph lesen und bearbeiten | TAM365 Blog](https://blog.topedia.com/?p=6680) (in German)  
 [Client Secrets und Zertifikate von Azure Apps ersetzen | TAM365 Blog](https://blog.topedia.com/2021/02/client-secrets-und-zertifikate-von-azure-apps-ersetzen) (in German) 
 
 
