@@ -10,7 +10,7 @@ Release Notes for my [TAMPowerShell module](/Documentation/Module/TAMPowerShell.
 
 ## RELEASE NOTES
 
-#### 1.1 - 2. March 2021
+#### 2021.03.1 - 2. March 2021
 **New commands**
 - [Get-TAMSGraphAllResults](/Documentation/Get-TAMSGraphAllResults.md)
 - [Write-TAPSLog](/Documentation/Write-TAPSLog.md)
@@ -21,7 +21,7 @@ Release Notes for my [TAMPowerShell module](/Documentation/Module/TAMPowerShell.
 - Some code corrections
 
 
-#### 1.0 - 21. February 2021
+#### 2021.02.1 - 21. February 2021
 First release
 - [Get-TAMSAuthToken](/Documentation/Get-TAMSAuthToken.md)  
 - [New-TAMSAuthJWT](/Documentation/New-TAMSAuthJWT.md)  
