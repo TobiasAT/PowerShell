@@ -129,7 +129,7 @@ Default value: None
 ```
 ### -API
 The required Microsoft API. 
- - Graph > Microsoft Graph API (Default)
+ - Graph > Microsoft Graph API
  - SharePoint > SharePoint Online REST API
  - OneDrive > OneDrive for Business REST API
  - Management > Office 365 Service Communications API and Office 365 Management Activity API (Enterprise)
@@ -139,7 +139,7 @@ Type: String
 Accepted values: Graph, SharePoint, OneDrive, Management
 Required: True
 Position: Named
-Default value: Graph
+Default value: None
 ```
 
 ### -Tenantname

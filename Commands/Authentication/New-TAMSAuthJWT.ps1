@@ -1,13 +1,15 @@
 
-<#  
-    .DESCRIPTION  
-    Builds a JSON Web Token (JWT) for an Azure app certificate authentication.
-    Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/New-TAMSAuthJWT.md.
-#> 
-
-
 function New-TAMSAuthJWT
-{	param( 	
+{	
+	<#  
+		.SYNOPSIS  
+		 Builds a JSON Web Token (JWT) for an Azure app certificate authentication.
+
+		.DESCRIPTION
+		Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/New-TAMSAuthJWT.md.
+	#> 
+	
+	param( 	
 		[Parameter(Mandatory=$true)][string]$CertThumbprint, 
 		[Parameter(Mandatory=$true)]
 		[ValidateScript({$_ -like '*.onmicrosoft.com'})][string]$Tenantname, 
@@ -15,9 +17,9 @@ function New-TAMSAuthJWT
 	)
 
 	# Loading the certificate from the local cert store
-	$Certificate = (Get-ChildItem -Path cert:\* -Recurse | ?{$_.Thumbprint -eq $CertThumbprint -and $_.PrivateKey.Count -eq 1 })
+	$Certificate = (Get-ChildItem -Path cert:\* -Recurse | Where-Object{$_.Thumbprint -eq $CertThumbprint -and $_.PrivateKey.Count -eq 1 })
 
-	if( $Certificate.Thumbprint -ne $null)
+	if( $null -ne $Certificate.Thumbprint)
 	{
 		$TokenUrl = "https://login.microsoftonline.com/$Tenantname/oauth2/v2.0/token"	
 		

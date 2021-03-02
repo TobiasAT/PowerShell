@@ -20,8 +20,10 @@ Import-Module TAMPowerShell
 The following commands are included in the module: 
 
 - [Get-TAMSAuthToken](/Documentation/Get-TAMSAuthToken.md)  
+- [Get-TAMSGraphAllResults](/Documentation/Get-TAMSGraphAllResults.md)
 - [New-TAMSAuthJWT](/Documentation/New-TAMSAuthJWT.md)  
-- [Show-TAAuthWindow](/Documentation/Show-TAAuthWindow.md)
+- [Show-TAAuthWindow](/Documentation/Show-TAAuthWindow.md)  
+- [Write-TAPSLog](/Documentation/Write-TAPSLog.md)
 
 
 ## Installation

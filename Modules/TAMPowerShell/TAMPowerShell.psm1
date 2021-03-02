@@ -2,15 +2,17 @@
 
 #Region Get-TAMSAuthToken
 
-<#  
-    .DESCRIPTION  
-    Receives an authentication token from Microsoft APIs.
-    Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/Get-TAMSAuthToken.md.
-#> 
-
-
 function Get-TAMSAuthToken
-{ param( 
+{ 	
+	<#  
+		.SYNOPSIS  
+		Receives an authentication token from Microsoft APIs.
+
+		.DESCRIPTION
+		Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/Get-TAMSAuthToken.md.
+	#> 
+	
+	param( 
 	[Parameter(Mandatory=$true, ParameterSetName = 'ClientSecret')][string]$ClientSecret,
 	[Parameter(Mandatory=$true, ParameterSetName = 'Certificate')][string]$CertThumbprint,	
 	[Parameter(Mandatory=$true)]
@@ -18,7 +20,7 @@ function Get-TAMSAuthToken
 	[Parameter(Mandatory=$true)][string]$AppID,		
 	[Parameter(Mandatory=$true)]
 	[ValidateSet('Graph','SharePoint','OneDrive','Management')]
-	[string]$API = 'Graph',	
+	[string]$API,	
 	[Parameter(Mandatory=$true)]
 	[ValidateSet('Application','Delegated')]
 	[string]$PermissionType,	
@@ -84,7 +86,7 @@ function Get-TAMSAuthToken
 			
 			$AuthJWT = New-TAMSAuthJWT -CertThumbprint $CertThumbprint -Tenantname $Tenantname -AppID $AppID
 					
-			if($AuthJWT -ne $null)
+			if($null -ne $AuthJWT)
 			{   # Create body for certificate authentication 
 			
 				if( $PermissionType -eq 'Application' )
@@ -149,15 +151,17 @@ function Get-TAMSAuthToken
 
 #Region New-TAMSAuthJWT
 
-<#  
-    .DESCRIPTION  
-    Builds a JSON Web Token (JWT) for an Azure app certificate authentication.
-    Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/New-TAMSAuthJWT.md.
-#> 
-
-
 function New-TAMSAuthJWT
-{	param( 	
+{	
+	<#  
+		.SYNOPSIS  
+		 Builds a JSON Web Token (JWT) for an Azure app certificate authentication.
+
+		.DESCRIPTION
+		Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/New-TAMSAuthJWT.md.
+	#> 
+	
+	param( 	
 		[Parameter(Mandatory=$true)][string]$CertThumbprint, 
 		[Parameter(Mandatory=$true)]
 		[ValidateScript({$_ -like '*.onmicrosoft.com'})][string]$Tenantname, 
@@ -165,9 +169,9 @@ function New-TAMSAuthJWT
 	)
 
 	# Loading the certificate from the local cert store
-	$Certificate = (Get-ChildItem -Path cert:\* -Recurse | ?{$_.Thumbprint -eq $CertThumbprint -and $_.PrivateKey.Count -eq 1 })
+	$Certificate = (Get-ChildItem -Path cert:\* -Recurse | Where-Object{$_.Thumbprint -eq $CertThumbprint -and $_.PrivateKey.Count -eq 1 })
 
-	if( $Certificate.Thumbprint -ne $null)
+	if( $null -ne $Certificate.Thumbprint)
 	{
 		$TokenUrl = "https://login.microsoftonline.com/$Tenantname/oauth2/v2.0/token"	
 		
@@ -229,19 +233,21 @@ function New-TAMSAuthJWT
 
 }
 
+
 #Region New-TAMSAuthJWT
 
 #Region Show-TAAuthWindow
-
-<#  
-    .DESCRIPTION  
-    Build and show an (oauth) authentication window (e.g. for an API authentication with Delegated permissions).
-    Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/Show-TAAuthWindow.md.
-#> 
-
-
 Function Show-TAAuthWindow
-{   param([Parameter(Mandatory=$true)][System.Uri]$Url )
+{   
+    <#  
+		.SYNOPSIS  
+		Build and show an (oauth) authentication window (e.g. for an API authentication with Delegated permissions).
+
+		.DESCRIPTION
+		Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/Show-TAAuthWindow.md.
+	#> 
+
+    param([Parameter(Mandatory=$true)][System.Uri]$Url )
 
     Add-Type -AssemblyName System.Windows.Forms
  
@@ -267,3 +273,78 @@ Function Show-TAAuthWindow
 }
 
 #EndRegion Show-TAAuthWindow
+
+#Region Write-TAPSLog
+
+function Write-TAPSLog
+{ 
+    <#  
+		.SYNOPSIS  
+		Adds or appends a new line to a log file.
+
+		.DESCRIPTION
+		Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/Write-TAPSLog.md.
+
+	#> 
+    
+    param ( 
+    [parameter(Mandatory=$true)]
+    [ValidateSet('Information','Error')]
+    [string]$Type,
+
+    [parameter(Mandatory=$true)]
+    [string]$Message,
+    [string]$Scriptname,
+    $Exception
+)
+
+    # Define the script and logfile name
+    if($Scriptname -eq "")
+        { $Scriptname = ("TAPSLog-" + (Get-Date -Format "dd-MM-yyyy"))   }
+
+    $LogDir = "C:\ScriptLog"
+
+    # Verify that the logfolder is created, else add the folder
+    if((Test-Path $LogDir) -eq $false )
+        { New-Item -ItemType directory -Path $LogDir | out-null }
+
+    $Script:Logfile = $LogDir + "\$Scriptname.log"
+
+    # Verify whether the logfile is already created, if not create a new file
+    if($null -eq (Get-Item $Logfile -ErrorAction SilentlyContinue))
+        { ("Date/Time;Type;Message;Exception") | out-file $Logfile }
+
+    Write-Output ((get-date -format G) + "; " + $Type + "; " + $Message + "; " + $Exception) | out-file $Logfile -append
+
+}
+
+#EndRegion Write-TAPSLog
+
+#Region Get-TAMSGraphAllResults
+
+function Get-TAMSGraphAllResults
+{ 
+	<#  
+		.SYNOPSIS  
+		Receives all results from a Microsoft Graph REST request (paging).
+
+		.DESCRIPTION
+		Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/Get-TAMSGraphAllResults.md.
+
+	#> 
+	
+	param( [Parameter(Mandatory=$true)]$Results,
+        [Parameter(Mandatory=$true)]$AuthHeader
+ 	) 
+	
+	$AllResults = $Results.value
+	while ($null -ne $Results.'@odata.nextLink' )
+	{   $Results = Invoke-RestMethod -Method Get -Headers $AuthHeader -Uri $Results.'@odata.nextLink' -ContentType 'application/json'		
+		$AllResults += $Results.value 		
+	}
+	$AllResults
+	
+}
+
+#EndRegion Get-TAMSGraphAllResults
+

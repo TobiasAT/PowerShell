@@ -1,13 +1,15 @@
 
-<#  
-    .DESCRIPTION  
-    Build and show an (oauth) authentication window (e.g. for an API authentication with Delegated permissions).
-    Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/Show-TAAuthWindow.md.
-#> 
-
-
 Function Show-TAAuthWindow
-{   param([Parameter(Mandatory=$true)][System.Uri]$Url )
+{   
+    <#  
+		.SYNOPSIS  
+		Build and show an (oauth) authentication window (e.g. for an API authentication with Delegated permissions).
+
+		.DESCRIPTION
+		Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/Show-TAAuthWindow.md.
+	#> 
+
+    param([Parameter(Mandatory=$true)][System.Uri]$Url )
 
     Add-Type -AssemblyName System.Windows.Forms
  

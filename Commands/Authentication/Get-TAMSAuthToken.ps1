@@ -1,13 +1,15 @@
 
-<#  
-    .DESCRIPTION  
-    Receives an authentication token from Microsoft APIs.
-    Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/Get-TAMSAuthToken.md.
-#> 
-
-
 function Get-TAMSAuthToken
-{ param( 
+{ 	
+	<#  
+		.SYNOPSIS  
+		Receives an authentication token from Microsoft APIs.
+
+		.DESCRIPTION
+		Documentation in my PowerShell repository at https://github.com/TobiasAT/PowerShell/blob/main/Documentation/Get-TAMSAuthToken.md.
+	#> 
+	
+	param( 
 	[Parameter(Mandatory=$true, ParameterSetName = 'ClientSecret')][string]$ClientSecret,
 	[Parameter(Mandatory=$true, ParameterSetName = 'Certificate')][string]$CertThumbprint,	
 	[Parameter(Mandatory=$true)]
@@ -15,7 +17,7 @@ function Get-TAMSAuthToken
 	[Parameter(Mandatory=$true)][string]$AppID,		
 	[Parameter(Mandatory=$true)]
 	[ValidateSet('Graph','SharePoint','OneDrive','Management')]
-	[string]$API = 'Graph',	
+	[string]$API,	
 	[Parameter(Mandatory=$true)]
 	[ValidateSet('Application','Delegated')]
 	[string]$PermissionType,	
@@ -81,7 +83,7 @@ function Get-TAMSAuthToken
 			
 			$AuthJWT = New-TAMSAuthJWT -CertThumbprint $CertThumbprint -Tenantname $Tenantname -AppID $AppID
 					
-			if($AuthJWT -ne $null)
+			if($null -ne $AuthJWT)
 			{   # Create body for certificate authentication 
 			
 				if( $PermissionType -eq 'Application' )

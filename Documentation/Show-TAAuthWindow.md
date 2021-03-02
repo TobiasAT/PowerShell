@@ -12,7 +12,7 @@ Build and show an (oauth) authentication window (e.g. for an API authentication 
 Show-TAAuthWindow [-Url <Uri>]  
 ```
 
-## Compatibility
+## COMPATIBILITY
 |              | Tested |
 | :----------: | :----: |
 | PowerShell 7 |   X    |
