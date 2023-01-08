@@ -4,7 +4,7 @@
 # Disconnect-TAOneDriveSyncedFolder
 
 ## SYNOPSIS
-Instead to force a OneDrive reset this command disconnects a single folder from your OneDrive Sync Client, or removes orphaned configurations to reconnect the synchronized folder again. 
+Instead to force a OneDrive reset [Disconnect-TAOneDriveSyncedFolder](/Commands/Disconnect-TAOneDriveSyncedFolder.ps1) disconnects a single folder from your OneDrive Sync Client, or removes orphaned configurations to reconnect the synchronized folder again. 
 
 ## SYNTAX
 
