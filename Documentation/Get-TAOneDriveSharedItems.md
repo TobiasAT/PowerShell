@@ -50,6 +50,9 @@ Get-TAOneDriveSharedItems [-UPN <string>] [-Export] [-ShowExternalEmail]
 
 ## EXAMPLE
 ```powershell
+Import-Module Microsoft.Graph.Authentication
+Connect-MgGraph -ClientID <AzureAppID> -TenantId <TenandID> -CertificateThumbprint <CertificateThumbprint>  
+
 Get-TAOneDriveSharedItems -UPN "max@example.com" -Export 
 ```
 ## PARAMETERS
