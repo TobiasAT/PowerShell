@@ -7,7 +7,7 @@
 The command evaluates all wikis in Teams via Microsoft Graph and summarizes it in a CSV file. You can prepare the file and send it to the owners of the teams. 
 For details read https://support.microsoft.com/en-us/office/export-a-wiki-to-a-onenote-notebook-8cd8ab0c-2314-42b0-a1d0-5c6c4c5e1547.   
 
-The following information are included in the report.  
+The following information are included in the report.   
 
 - All Teams channels with at least one wiki tab. There can be multiple wikis in a channel. The summary includes all wikis in the channel.
 - Channel name in which the wiki is located
