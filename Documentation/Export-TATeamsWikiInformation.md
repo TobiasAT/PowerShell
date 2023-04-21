@@ -4,7 +4,7 @@
 # Export-TATeamsWikiInformation
 
 ## SYNOPSIS
-The command evaluates all wikis in Teams via Microsoft Graph and summarizes it in a CSV file. You can prepare the file and send it to the owners of the teams. 
+The command evaluates all wikis in Teams via Microsoft Graph and summarizes it in a CSV file. You can prepare the file and send it to the owners of the teams.   
 For details read https://support.microsoft.com/en-us/office/export-a-wiki-to-a-onenote-notebook-8cd8ab0c-2314-42b0-a1d0-5c6c4c5e1547.   
 
 The following information are included in the report.   
@@ -13,7 +13,7 @@ The following information are included in the report.
 - Channel name in which the wiki is located
 - Which team 
 - The owners of the team
-- Channel type, it shows Standard and Private Channels.   
+- Channel type (Standard or Private Channel).   
 Theoretically, shared channels are also included, but shared channels do not support wikis at the moment.
 - Name of the wiki tab
 - Creation date of the wiki, only for recently created wikis. Teams did not record the creation date of a wiki in the past.
