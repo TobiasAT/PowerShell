@@ -4,13 +4,13 @@
 # 
 # PowerShell module Microsoft.Graph.Authentication is required > https://www.powershellgallery.com/packages/Microsoft.Graph.Authentication
 
-Connect-MgGraph -Scopes Bookings.Manage.All,User.ReadWrite.All
 
 $CurrentBookingsCalenderName = "Topedia Blookings"
 $NewBookingsCalenderName = "Topedia Bookings"
 $NewBookingsMailAddress = "TopediaBookings@demo1.tam365.com"
 
 # Receive the current Bookings calendar
+Connect-MgGraph -Scopes Bookings.Manage.All,User.ReadWrite.All
 $Url = "https://graph.microsoft.com/v1.0/solutions/bookingBusinesses?query=$CurrentBookingsCalenderName"
 $Result = Invoke-MgGraphRequest -Method GET -Uri $Url -ContentType "application/json" 
 $Result.value
@@ -31,7 +31,7 @@ $BookingsCalendar = Invoke-MgGraphRequest -Method GET -Uri $Url -ContentType "ap
 $BookingsCalendar
 
 # Load the user account from the Booking calendar
-$Url = "https://graph.microsoft.com/beta/users/$BookingsCalendarID"
+$Url = "https://graph.microsoft.com/v1.0/users/$BookingsCalendarID"
 $BookingsUserAccount = Invoke-MgGraphRequest -Method GET -Uri $Url -ContentType "application/json" 
 $BookingsUserAccount | select userPrincipalName,mail,id | fl
 
