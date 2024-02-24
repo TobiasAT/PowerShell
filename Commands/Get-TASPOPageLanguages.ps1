@@ -31,16 +31,24 @@ function Get-TASPOPageLanguages {
         $SitePageLibrary = Get-PnPList | ?{$_.EntityTypeName -eq "SitePages" }
     }
     catch {
+        # If an error occurs (usually because Connect-PnPOnline has not been called), write an error message and return
         Write-Error "Connect-PnPOnline must be called first." ; return
     }    
     
+    # Get all list items from the Site Pages library
     $AllListItems = Get-PnPListItem -List $SitePageLibrary -PageSize 1000
+
+    # Find the list item with the specified page ID
     $ListItem = ($AllListItems | ?{$_.FieldValues.ID -eq $PageID }).FieldValues
+
+    # If no list item with the specified ID is found, write an error message and return
     if($ListItem.Count -eq 0) { Write-Error "Page with ID $PageID not found." ; return }
 
+    # Initialize an array to hold all pages and retrieve the source item and all translations if the list item has translations or is a translation itself
     $AllPages = @()
     if( $ListItem._SPTranslatedLanguages.Count -gt 0 -or $ListItem._SPIsTranslation -eq $true )
     { 
+        # If the list item is not a translation, use its unique ID; otherwise, use the unique ID of the source item
         if( $ListItem._SPTranslationSourceItemId.Guid -eq $null )
         { $ListItemGuid = $ListItem.UniqueId.Guid } else
         {   $ListItem =  $AllListItems.FieldValues | ?{$_.UniqueId.Guid -eq $ListItem._SPTranslationSourceItemId.Guid } 
@@ -49,11 +57,17 @@ function Get-TASPOPageLanguages {
 
         $AllPages += $ListItem
         $AllPages += $AllListItems.FieldValues | ?{$_._SPTranslationSourceItemId.Guid -eq $ListItemGuid }   
-    } else { $AllPages += $ListItem }           
+    } else { 
+        # If the list item has no translations and is not a translation, add it to the array
+        $AllPages += $ListItem 
+    }           
 
+    # Initialize an array to hold the language pages and loop through all pages
     $LanguagePages = @()
     foreach ($Item in $AllPages)
-    {   $LanguagePages += [PSCustomObject]@{
+    {   
+        # Add a custom object representing the page to the array
+        $LanguagePages += [PSCustomObject]@{
             'ID' = $Item.ID
             'IsTranslation' = $Item._SPIsTranslation
             'Language' = $Item._SPTranslationLanguage                
