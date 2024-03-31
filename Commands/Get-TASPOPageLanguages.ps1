@@ -22,9 +22,11 @@ function Get-TASPOPageLanguages {
         Before running this command, you must connect to your SharePoint Online site using Connect-PnPOnline. If a connection has not been established, the command will return an error.
         The command returns an array of custom objects, each representing a language version of the page. Each object includes the following properties: ID, IsTranslation, Language, Title, and RelativeUrl.
 
-        Author: Tobias Asböck - https://www.linkedin.com/in/tobiasasboeck
-        Last updated: 24.02.2024
-        
+        Author: Tobias Asböck - https://github.com/TobiasAT/PowerShell 
+        Last updated: 31.03.2024
+
+        .Link 
+        https://topedia.net/wP40qr        
     #>
 
     try {
@@ -35,11 +37,14 @@ function Get-TASPOPageLanguages {
         Write-Error "Connect-PnPOnline must be called first." ; return
     }    
     
+    # Get the main language of the site
+    $WebMainLanguage = (Get-PnPWeb -Includes Language).Language
+
     # Get all list items from the Site Pages library
-    $AllListItems = Get-PnPListItem -List $SitePageLibrary -PageSize 1000
+    $AllListItems = Get-PnPListItem -List $SitePageLibrary -PageSize 1000 
 
     # Find the list item with the specified page ID
-    $ListItem = ($AllListItems | ?{$_.FieldValues.ID -eq $PageID }).FieldValues
+    $ListItem = ($AllListItems | ?{$_.FieldValues.ID -eq $PageID }).FieldValues    
 
     # If no list item with the specified ID is found, write an error message and return
     if($ListItem.Count -eq 0) { Write-Error "Page with ID $PageID not found." ; return }
@@ -67,13 +72,32 @@ function Get-TASPOPageLanguages {
     foreach ($Item in $AllPages)
     {   
         # Add a custom object representing the page to the array
-        $LanguagePages += [PSCustomObject]@{
-            'ID' = $Item.ID
-            'IsTranslation' = $Item._SPIsTranslation
-            'Language' = $Item._SPTranslationLanguage                
-            'Title' = $Item.Title
-            'RelativeUrl' = $Item.FileRef                     
-        }    
+        $LanguageItem = [PSCustomObject]@{
+                'ID' = $Item.ID
+                'IsTranslation' = $null
+                'Language' = $null
+                'LanguageID' = $null             
+                'Title' = $Item.Title
+                'RelativeUrl' = $Item.FileRef                     
+            } 
+
+        if( $Item._SPTranslationLanguage -ne $null)
+        {   $LanguageItem.IsTranslation = $Item._SPIsTranslation
+            $LanguageItem.Language = $Item._SPTranslationLanguage
+            $LanguageItem.LanguageID = ([System.Globalization.CultureInfo]::GetCultureInfo($Item._SPTranslationLanguage)).LCID 
+        } else { 
+            
+            [int]$LanguageID = $WebMainLanguage       
+            $LanguageItem.LanguageID = $LanguageID      
+            $LanguageItem.Language = ([System.Globalization.CultureInfo]::GetCultureInfo($LanguageID)).Name.ToLower()            
+
+            if( $Item._SPIsTranslation -ne $null ) { 
+                $LanguageItem.IsTranslation = $Item._SPIsTranslation } else 
+                { $LanguageItem.IsTranslation = $false }
+        }   
+
+        $LanguagePages += $LanguageItem
+
     }
 
     return $LanguagePages  
