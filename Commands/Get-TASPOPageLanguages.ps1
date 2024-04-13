@@ -26,21 +26,21 @@ function Get-TASPOPageLanguages {
         Last updated: 31.03.2024
 
         .Link 
-        https://topedia.net/wP40qr        
+        https://topedia.net/wP40qr
+        
     #>
 
-    try {
-        $SitePageLibrary = Get-PnPList | ?{$_.EntityTypeName -eq "SitePages" }
-    }
+    try { Get-PnPContext | Out-Null }
     catch {
         # If an error occurs (usually because Connect-PnPOnline has not been called), write an error message and return
         Write-Error "Connect-PnPOnline must be called first." ; return
-    }    
-    
-    # Get the main language of the site
+    }        
+
+    # Get the main language of the site    
     $WebMainLanguage = (Get-PnPWeb -Includes Language).Language
 
     # Get all list items from the Site Pages library
+    $SitePageLibrary = Get-PnPList | ?{$_.EntityTypeName -eq "SitePages" }
     $AllListItems = Get-PnPListItem -List $SitePageLibrary -PageSize 1000 
 
     # Find the list item with the specified page ID
@@ -67,11 +67,13 @@ function Get-TASPOPageLanguages {
         $AllPages += $ListItem 
     }           
 
-    # Initialize an array to hold the language pages and loop through all pages
+    # Initialize an array to hold the language pages
     $LanguagePages = @()
+    
+    # Loop through all pages
     foreach ($Item in $AllPages)
     {   
-        # Add a custom object representing the page to the array
+        # Create a custom object to represent the page
         $LanguageItem = [PSCustomObject]@{
                 'ID' = $Item.ID
                 'IsTranslation' = $null
@@ -80,27 +82,38 @@ function Get-TASPOPageLanguages {
                 'Title' = $Item.Title
                 'RelativeUrl' = $Item.FileRef                     
             } 
-
+    
+        # Check if the page has a translation language
         if( $Item._SPTranslationLanguage -ne $null)
-        {   $LanguageItem.IsTranslation = $Item._SPIsTranslation
+        {   
+            # If it does, set the IsTranslation, Language, and LanguageID properties
+            $LanguageItem.IsTranslation = $Item._SPIsTranslation
             $LanguageItem.Language = $Item._SPTranslationLanguage
             $LanguageItem.LanguageID = ([System.Globalization.CultureInfo]::GetCultureInfo($Item._SPTranslationLanguage)).LCID 
-        } else { 
-            
+        } 
+        else 
+        { 
+            # If it doesn't, set the LanguageID and Language properties to the main web language
             [int]$LanguageID = $WebMainLanguage       
             $LanguageItem.LanguageID = $LanguageID      
             $LanguageItem.Language = ([System.Globalization.CultureInfo]::GetCultureInfo($LanguageID)).Name.ToLower()            
-
-            if( $Item._SPIsTranslation -ne $null ) { 
-                $LanguageItem.IsTranslation = $Item._SPIsTranslation } else 
-                { $LanguageItem.IsTranslation = $false }
-        }   
-
-        $LanguagePages += $LanguageItem
-
-    }
-
-    return $LanguagePages  
     
+            # Check if the page is a translation
+            if( $Item._SPIsTranslation -ne $null ) 
+            {                 
+                $LanguageItem.IsTranslation = $Item._SPIsTranslation 
+            } 
+            else 
+            {                 
+                $LanguageItem.IsTranslation = $false 
+            }
+        }   
+    
+        # Add the custom object to the LanguagePages array
+        $LanguagePages += $LanguageItem
+    }
+    
+    # Return the array of language pages
+    return $LanguagePages  
 }
 
