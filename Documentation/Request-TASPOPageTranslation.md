@@ -45,19 +45,19 @@ Request-TASPOPageTranslation [-SiteUrl] [-PageID] [-TranslationLanguage] [-DeepL
 
 ## EXAMPLE
 ```powershell
-Request-TASPOPageTranslation -PageID 3 -TranslationLanguage DE
+Request-TASPOPageTranslation -PageID 3 -TranslationLanguage DE -SiteUrl <SharePointSiteUrl>
 ```  
 Requests a translation for PageID 3 into German. Translation note is added to the translated page and page is not published.     
 ___
 
 ```powershell
-Request-TASPOPageTranslation -PageID 3 -TranslationLanguage DE -SkipTranslationNote
+Request-TASPOPageTranslation -PageID 3 -TranslationLanguage DE -SkipTranslationNote -SiteUrl <SharePointSiteUrl>
 ```  
 Requests a translation for PageID 3 into German. Translation note is not added to the translated page and page is not published.   
 ___
 
 ```powershell
-Request-TASPOPageTranslation -PageID 3 -TranslationLanguage DE -DeepLEdition "Pro"
+Request-TASPOPageTranslation -PageID 3 -TranslationLanguage DE -DeepLEdition "Pro" -SiteUrl <SharePointSiteUrl>
 ```  
 Requests a translation for PageID 3 into German via the DeepL Pro API. Translation note is added to the translated page and page is not published.  
 
