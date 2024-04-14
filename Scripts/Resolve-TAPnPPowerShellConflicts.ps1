@@ -2,7 +2,7 @@
 <#
   .SYNOPSIS
     This script resolves known conflicts between the PnP.PowerShell and Microsoft.Graph.Authentication PowerShell modules.
-    For my blog post at https://blog-en.topedia.com/?p=37829. 
+    For my blog post at https://blog-en.topedia.com/2024/04/resolve-conflicts-between-pnppowershell-and-microsoftgraphauthentication-module. 
 
   .DESCRIPTION
     The Resolve-TAPnPPowerShellConflicts script checks the installed versions of the PnP.PowerShell and Microsoft.Graph.Authentication modules. 

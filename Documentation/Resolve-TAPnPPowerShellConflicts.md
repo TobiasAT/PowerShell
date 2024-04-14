@@ -5,7 +5,7 @@
 
 ## SYNOPSIS
 This script resolves known conflicts between the PnP.PowerShell and Microsoft.Graph.Authentication PowerShell modules.   
-More details in my blog post at https://blog-en.topedia.com/?p=37829. 
+More details in my blog post at https://blog-en.topedia.com/2024/04/resolve-conflicts-between-pnppowershell-and-microsoftgraphauthentication-module. 
 
 ## DESCRIPTION
 The Resolve-TAPnPPowerShellConflicts script checks the installed versions of the PnP.PowerShell and Microsoft.Graph.Authentication modules. 
@@ -32,7 +32,7 @@ Resolve-TAPnPPowerShellConflicts
 
 ## RELATED LINKS
 
-[Resolve conflicts between PnP.PowerShell and Microsoft.Graph.Authentication module | Topedia Blog](https://blog-en.topedia.com/?p=37829)   
+[Resolve conflicts between PnP.PowerShell and Microsoft.Graph.Authentication module | Topedia Blog](https://blog-en.topedia.com/2024/04/resolve-conflicts-between-pnppowershell-and-microsoftgraphauthentication-module)   
 [Invoke-MgGraphRequest with error “Microsoft.Graph.Core, Version=1.25.1.0 | Topedia Blog](https://blog-en.topedia.com/2024/02/invoke-mggraphrequest-with-error-microsoft-graph-core-version-12510/)   
 [Microsoft.Graph and PnP.PowerShell conflict | GitHub](https://github.com/microsoftgraph/msgraph-sdk-powershell/issues/2285)    
 [BUG - Assembly Conflicts with Microsoft.Graph Module | GitHub](https://github.com/pnp/powershell/issues/3637)  
