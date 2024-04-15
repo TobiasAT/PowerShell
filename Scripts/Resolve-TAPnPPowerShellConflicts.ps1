@@ -14,7 +14,7 @@
     Resolve-TAPnPPowerShellConflicts
 
   .NOTES
-    It's recommended to close your PowerShell sessions first before running this script to avoid file conflicts.
+    It's recommended to close all your PowerShell sessions before running this script to avoid file conflicts (VS Code included).
     In case of issues with the PnP.PowerShell module just update the module with the following command: Update-Module PnP.PowerShell -Force
 
     Author: Tobias Asboeck - https://github.com/TobiasAT/PowerShell 
