@@ -5,7 +5,7 @@
 
 ## SYNOPSIS
 This script resolves known conflicts between the PnP.PowerShell and Microsoft.Graph.Authentication PowerShell modules.   
-More details in my [blog post](https://blog-en.topedia.com/2024/04/resolve-conflicts-between-pnppowershell-and-microsoftgraphauthentication-module). 
+More details in my [blog post](https://blog-en.topedia.com/2024/04/fix-conflicts-between-pnppowershell-and-microsoftgraphauthentication-module). 
 
 ## DESCRIPTION
 The Resolve-TAPnPPowerShellConflicts script checks the installed versions of the PnP.PowerShell and Microsoft.Graph.Authentication modules. 
@@ -13,7 +13,10 @@ If the modules are installed and their versions are 2.* or higher, the script pr
   - If Microsoft.Graph.Core.dll exists in the PnP.PowerShell module directory, the file is deleted to avoid conflicts > [GitHub Issue 2285](https://github.com/microsoftgraph/msgraph-sdk-powershell/issues/2285). 
   - If the version of Microsoft.Identity.Client.dll in the PnP.PowerShell module directory is 4.50.*, the script attempts to copy it from the Microsoft.Graph.Authentication directory > [GitHub Issue 3637](https://github.com/pnp/powershell/issues/3637).  
 
-It's recommended to close all your PowerShell sessions before running this script to avoid file conflicts (VS Code included).
+It's recommended to close all your PowerShell sessions before running the script to avoid file conflicts (VS Code included).   
+
+**Note:**  
+Keep in mind, after an update of the PnP.PowerShell module (and in case the DLLs are still outdated), the script must be executed again.
 
 ## SYNTAX
 
