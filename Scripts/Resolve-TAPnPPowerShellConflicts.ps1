@@ -76,7 +76,7 @@ else {
 # Check the version of Microsoft.Identity.Client.dll
 Write-Host "Checking Microsoft.Identity.Client.dll version..." -f Yellow
 $PnPIdentityClientFile = Get-Item -Path ($PnPModuleDirectory + "\Core\Microsoft.Identity.Client.dll")
-if( $PnPIdentityClientFile.VersionInfo.FileVersion -like "4.5.*" ) {
+if( $PnPIdentityClientFile.VersionInfo.FileVersion -like "4.5*" ) {
 
   Write-Host "Copying Microsoft.Identity.Client.dll from Microsoft.Graph.Authentication to PnP.PowerShell module directory"   
 
