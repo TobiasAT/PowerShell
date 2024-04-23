@@ -18,7 +18,7 @@
     In case of issues with the PnP.PowerShell module just update the module with the following command: Update-Module PnP.PowerShell -Force
 
     Author: Tobias Asboeck - https://github.com/TobiasAT/PowerShell 
-    Date: 20.03.2024
+    Updated: 23.04.2024
 
   .LINK
   https://topedia.net/QUDaEa
@@ -76,7 +76,7 @@ else {
 # Check the version of Microsoft.Identity.Client.dll
 Write-Host "Checking Microsoft.Identity.Client.dll version..." -f Yellow
 $PnPIdentityClientFile = Get-Item -Path ($PnPModuleDirectory + "\Core\Microsoft.Identity.Client.dll")
-if( $PnPIdentityClientFile.VersionInfo.FileVersion -like "4.5*" ) {
+if( $PnPIdentityClientFile.VersionInfo.FileVersion -like "4.50.*" ) {
 
   Write-Host "Copying Microsoft.Identity.Client.dll from Microsoft.Graph.Authentication to PnP.PowerShell module directory"   
 
