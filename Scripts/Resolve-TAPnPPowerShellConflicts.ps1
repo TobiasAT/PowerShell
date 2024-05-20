@@ -8,7 +8,7 @@
     The Resolve-TAPnPPowerShellConflicts script checks the installed versions of the PnP.PowerShell and Microsoft.Graph.Authentication modules. 
     If the modules are installed and their versions are 2.* or higher, the script proceeds to check the versions of Microsoft.Graph.Core.dll and Microsoft.Identity.Client.dll in the PnP.PowerShell module directory.
     - If Microsoft.Graph.Core.dll exists in the PnP.PowerShell module directory, the file is deleted to avoid conflicts.
-    - If the version of Microsoft.Identity.Client.dll in the PnP.PowerShell module directory is 4.50.*, the script attempts to copy it from the Microsoft.Graph.Authentication directory.
+    - If the version of Microsoft.Identity.Client.dll in the PnP.PowerShell module directory equal to 4.50.0.0 or less, the script attempts to copy it from the Microsoft.Graph.Authentication directory.
 
   .EXAMPLE
     Resolve-TAPnPPowerShellConflicts
@@ -18,11 +18,14 @@
     In case of issues with the PnP.PowerShell module just update the module with the following command: Update-Module PnP.PowerShell -Force
 
     Author: Tobias Asboeck - https://github.com/TobiasAT/PowerShell 
-    Updated: 23.04.2024
+    Updated: 20.05.2024
 
   .LINK
   https://topedia.net/QUDaEa
 #>
+
+# ISE or PowerShell 5 may not detect all installed PnP modules, so display a warning message for informational purposes
+If ($psISE -or ($PSVersionTable.PSVersion.Major -eq 5)) {Write-Warning "Do not run with ISE or PowerShell 5, as it may not detect all installed PnP modules."}
 
 # Get the directory of the PnP.PowerShell module
 $PnPModuleDirectory = Get-Module PnP.PowerShell -ListAvailable | ?{$_.Version -like "2.*" } | sort Version -Descending
@@ -76,7 +79,7 @@ else {
 # Check the version of Microsoft.Identity.Client.dll
 Write-Host "Checking Microsoft.Identity.Client.dll version..." -f Yellow
 $PnPIdentityClientFile = Get-Item -Path ($PnPModuleDirectory + "\Core\Microsoft.Identity.Client.dll")
-if( $PnPIdentityClientFile.VersionInfo.FileVersion -like "4.50.*" ) {
+if( $PnPIdentityClientFile.VersionInfo.FileVersion -le [System.Version]"4.50.0.0" ) {
 
   Write-Host "Copying Microsoft.Identity.Client.dll from Microsoft.Graph.Authentication to PnP.PowerShell module directory"   
 
@@ -91,6 +94,6 @@ if( $PnPIdentityClientFile.VersionInfo.FileVersion -like "4.50.*" ) {
 } else 
 { 
   # If the version of the file is not 4.5.*, display a message
-  Write-Host "Skipped, Microsoft.Identity.Client.dll version is not 4.50.*" 
+  Write-Host "Skipped, Microsoft.Identity.Client.dll version is not 4.50.0.0 or less" 
 }
 
