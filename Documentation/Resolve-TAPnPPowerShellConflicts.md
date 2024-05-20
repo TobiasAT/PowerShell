@@ -13,7 +13,7 @@ If the modules are installed and their versions are 2.* or higher, the script pr
   - If Microsoft.Graph.Core.dll exists in the PnP.PowerShell module directory, the file is deleted to avoid conflicts > [GitHub Issue 2285](https://github.com/microsoftgraph/msgraph-sdk-powershell/issues/2285). 
   - If the version of Microsoft.Identity.Client.dll in the PnP.PowerShell module directory equal to 4.50.0.0 or less, the script attempts to copy it from the Microsoft.Graph.Authentication directory > [GitHub Issue 3637](https://github.com/pnp/powershell/issues/3637).  
 
-Be careful if you run the script with PowerShell ISE or PowerShell 5, they may not detect all installed PnP modules.
+Be careful if you run the script with PowerShell ISE or PowerShell 5, they may not detect all installed PnP modules.  
 It's recommended to close all your PowerShell sessions before running the script to avoid file conflicts (VS Code included).   
 
 **Note:**  
