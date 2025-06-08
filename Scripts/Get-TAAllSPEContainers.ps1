@@ -16,7 +16,7 @@
         Optional. Specifies which application to filter containers by.
         Acceptable values:
         - All (default): Retrieves containers for both Loop and Designer
-        - MicrosoftLoop: Retrieves only Microsoft Loop containers
+        - MicrosoftLoop: Retrieves only Loop Workspace containers
         - MicrosoftDesigner: Retrieves only Microsoft Designer containers
 
     .PARAMETER IncludeDetails
@@ -33,7 +33,7 @@
         Retrieves all containers across Loop and Designer, including detailed metadata for each.
 
     .NOTES
-        - Requires PowerShell 5.x due to the SharePoint Online Management Shell module limitation.
+        - Requires PowerShell 5.x due to the SharePoint Online Management Shell module.
         - Ensure you're connected to SharePoint Online using Connect-SPOService before running this script.
 
         Author: Tobias Asböck — https://www.linkedin.com/in/tobiasasboeck  
@@ -124,11 +124,14 @@ foreach ($SPEApp in $SPEContainerApps) {
     if( $IncludeDetails -eq $true) {
 
         $Count = 1
+        $TotalContainers = $AllSPEContainers.Count
         foreach ($SPEContainer in $AllSPEContainers) {
-            Write-Host "   Collecting details for container $Count of $($AllSPEContainers.Count): $($SPEContainer.ContainerId)" 
+            Write-Host "   Collecting details for container $Count of $TotalContainers`: $($SPEContainer.ContainerId)" 
             $AllSPEContainerDetails += Get-SPOContainer -Identity $SPEContainer.ContainerId
             $Count++
-        }        
+        } 
+
+        $AllSPEContainers = @()     
     }
 }
 
