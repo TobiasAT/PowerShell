@@ -1,39 +1,50 @@
 
 
 <#
-.SYNOPSIS
-    Retrieves SharePoint Embedded containers filtered by OwningApplication with paging support.
+    .SYNOPSIS
+        Retrieves all SharePoint Embedded containers for Loop and/or Designer with optional detailed output and paging support.
 
-.DESCRIPTION
-    This script connects to SharePoint Online (requires connection) and fetches all SharePoint Embedded containers
-    for either Microsoft Loop, Microsoft Designer or both. It handles paging automatically.
+    .DESCRIPTION
+        This script connects to SharePoint Online (requires an active session) and fetches all SharePoint Embedded containers
+        owned by Microsoft Loop, Microsoft Designer, or both. It includes automatic paging support for more than 200 containers.
 
-    For more information read my blog post at https://blog-en.topedia.com/?p=51401.
+        If the -IncludeDetails switch is specified, the script retrieves full metadata for each container.
 
-.PARAMETER OwningApplication
-    Optional, the owning application to filter containers. 
-    Acceptable values:
-    - All (default) > collects containers for all applications (Loop and Designer) 
-    - MicrosoftLoop > collects containers for Microsoft Loop
-    - MicrosoftDesigner > collects containers for Microsoft Designer
+        For additional context, see the related blog post: https://blog-en.topedia.com/?p=51401
 
-.EXAMPLE
-    .\Get-TAAllSPEContainers.ps1 -OwningApplication MicrosoftLoop
+    .PARAMETER OwningApplication
+        Optional. Specifies which application to filter containers by.
+        Acceptable values:
+        - All (default): Retrieves containers for both Loop and Designer
+        - MicrosoftLoop: Retrieves only Microsoft Loop containers
+        - MicrosoftDesigner: Retrieves only Microsoft Designer containers
 
-    Retrieves SharePoint Embedded containers related to Loop Workspaces.
+    .PARAMETER IncludeDetails
+        Optional. If specified, the script retrieves detailed metadata for each container (via an additional call per container).
 
-.NOTES
-    - Requires PowerShell 5.x and the Microsoft.Online.SharePoint.PowerShell module.
-    - You must be connected to SharePoint Online using Connect-SPOService before running.
+    .EXAMPLE
+        .\Get-TAAllSPEContainers.ps1 -OwningApplication MicrosoftLoop
 
-    Author: Tobias Asböck - https://www.linkedin.com/in/tobiasasboeck    
-    Update Date: 8 June 2025
+        Retrieves all SharePoint Embedded containers owned by Microsoft Loop.
 
+    .EXAMPLE
+        .\Get-TAAllSPEContainers.ps1 -IncludeDetails
+
+        Retrieves all containers across Loop and Designer, including detailed metadata for each.
+
+    .NOTES
+        - Requires PowerShell 5.x due to the SharePoint Online Management Shell module limitation.
+        - Ensure you're connected to SharePoint Online using Connect-SPOService before running this script.
+
+        Author: Tobias Asböck — https://www.linkedin.com/in/tobiasasboeck  
+        Last Updated: 8 June 2025
 #>
+
 
 param(
     [ValidateSet("MicrosoftLoop", "MicrosoftDesigner", "All")]
-    [string]$OwningApplication = "All"
+    [string]$OwningApplication = "All",
+    [switch]$IncludeDetails 
 )
 
 #requires -Module Microsoft.Online.SharePoint.PowerShell
@@ -64,6 +75,7 @@ $SPEContainerApps = if ($OwningApplication -eq "All") {
 }
 
 $AllSPEContainers = @()
+$AllSPEContainerDetails = @()
 
 foreach ($SPEApp in $SPEContainerApps) {
     Write-Host "Collecting containers for $SPEApp..." -ForegroundColor Cyan
@@ -106,7 +118,25 @@ foreach ($SPEApp in $SPEContainerApps) {
     } else {                
         $AllSPEContainers += $SPOContainers[0..($SPOContainers.Count - 2)]
     }
+
+    # If specified, the script retrieves detailed metadata for each container.
+    # Depending on the number of containers, this may take a while.
+    if( $IncludeDetails -eq $true) {
+
+        $Count = 1
+        foreach ($SPEContainer in $AllSPEContainers) {
+            Write-Host "   Collecting details for container $Count of $($AllSPEContainers.Count): $($SPEContainer.ContainerId)" 
+            $AllSPEContainerDetails += Get-SPOContainer -Identity $SPEContainer.ContainerId
+            $Count++
+        }        
+    }
 }
 
 # Output the end result
-return $AllSPEContainers
+if( $IncludeDetails -eq $true) {
+ return $AllSPEContainerDetails 
+} else {
+  return $AllSPEContainers
+}
+
+
