@@ -103,8 +103,8 @@ foreach ($SPEApp in $SPEContainerApps) {
         }
 
         $AllSPEContainers += $CurrentContainers
-    } else {
-        $AllSPEContainers += $SPOContainers
+    } else {                
+        $AllSPEContainers += $SPOContainers[0..($SPOContainers.Count - 2)]
     }
 }
 
