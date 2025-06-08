@@ -77,16 +77,16 @@ foreach ($SPEApp in $SPEContainerApps) {
 
     if ($SPOContainers.Count -eq 201 -and $SPOContainers[200] -like "Retrieve remaining containers*") {
         $CurrentContainers = $SPOContainers[0..199]
-        $PagingID = $SPOContainers[200].Split(" ")[-1]
+        $PagingToken = $SPOContainers[200].Split(" ")[-1]
 
         while ($true) {
-            $SPOContainers = Get-SPOContainer -OwningApplicationId $OwningApplicationId -Paged -PagingToken $PagingID
+            $SPOContainers = Get-SPOContainer -OwningApplicationId $OwningApplicationId -Paged -PagingToken $PagingToken
             $lastItem = $SPOContainers[-1]
 
             if ($lastItem -like "Retrieve remaining containers*") {
                 $CurrentContainers += $SPOContainers[0..199]
                 if ($SPOContainers.Count -gt 200) {
-                    $PagingID = $SPOContainers[200].Split(" ")[-1]
+                    $PagingToken = $SPOContainers[200].Split(" ")[-1]
                 } else {
                     Write-Warning "Expected paging marker at position 200, but fewer items were returned."
                     break
