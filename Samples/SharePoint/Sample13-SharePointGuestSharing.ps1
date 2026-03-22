@@ -33,7 +33,7 @@ $SiteUri      = [System.Uri]$SiteUrl
 $Hostname     = $SiteUri.Host
 $SitePath     = $SiteUri.AbsolutePath
 
-# Step 0: Check if the guest already exists in Entra ID. If not, invite the guest to Entra ID before sharing the item.
+# Step 1: Check if the guest already exists in Entra ID. If not, invite the guest to Entra ID before sharing the item.
 # The guest UPN format is email_domain#EXT#@tenantdomain.onmicrosoft.com, encoding is required for the # and @ characters when used in the Graph API URL.
 
 # Splitting the email to get the domain part for constructing the guest UPN, which is required for checking if the guest already exists in Entra ID.
@@ -61,12 +61,12 @@ try {
     Write-Host "Guest user ID has been invited: $($InviteResult.invitedUser.id)"
 }
 
-# Step 1: Resolve the driveItem to get the drive ID and item ID
+# Step 2: Resolve the driveItem to get the drive ID and item ID
 $DriveItem   = Invoke-MgGraphRequest -Method Get -Uri "https://graph.microsoft.com/v1.0/sites/$($Hostname):$($SitePath):/lists/$($SiteListID)/items/$($ListItemID)/driveItem"
 $DriveId     = $DriveItem.parentReference.driveId
 $DriveItemId = $DriveItem.id
 
-# Step 2: Share the item with the external user via Graph — roles: "read" or "write"
+# Step 3: Share the item with the external user via Graph — roles: "read" or "write"
 $InviteBody = @{
     requireSignIn  = $true
     sendInvitation = $true
