@@ -29,10 +29,10 @@ if (-not (Test-Path -Path $LocalFolderPath)) {
     New-Item -Path $LocalFolderPath -ItemType Directory | Out-Null
 }
 Set-Location -Path $LocalFolderPath
-Get-WhiteboardsForTenant -Geography Europe $NonMigratedRunName_EU -ForceAuthPrompt
+Get-WhiteboardsForTenant -Geography Europe -IncrementalRunName $NonMigratedRunName_EU -ForceAuthPrompt
 
-Get-WhiteboardsForTenant -Geography Worldwide $NonMigratedRunName_WW 
-Get-WhiteboardsForTenant -Geography Australia $NonMigratedRunName_AU 
+Get-WhiteboardsForTenant -Geography Worldwide -IncrementalRunName $NonMigratedRunName_WW 
+Get-WhiteboardsForTenant -Geography Australia -IncrementalRunName $NonMigratedRunName_AU 
 
 # Combine the non-migrated whiteboard data from both Europe and Worldwide into a single collection for further processing.
 $FileContentNonMigrated_All = Get-Content -Path $NonMigratedWhiteboardsFilePath_EU, $NonMigratedWhiteboardsFilePath_WW, $NonMigratedWhiteboardsFilePath_AU | ForEach-Object {
