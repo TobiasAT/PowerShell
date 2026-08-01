@@ -6,7 +6,7 @@
 
 #require -Module WhiteboardAdmin
 
-# Prepare the environment for the Whiteboard migration 
+# Prepare the environment for the Whiteboard migration report
 $TenantId = "<Your Tenant ID>" 
 $ClientId = "<Your Client ID>" 
 $CertThumbprint = "<Your Certificate Thumbprint>" 
@@ -21,7 +21,7 @@ $NonMigratedRunName_WW = [IO.Path]::GetFileNameWithoutExtension($NonMigratedWhit
 $NonMigratedWhiteboardsFilePath_AU = "$LocalFolderPath\Whiteboards-NonMigrated-AU.txt"
 $NonMigratedRunName_AU = [IO.Path]::GetFileNameWithoutExtension($NonMigratedWhiteboardsFilePath_AU) -replace '^Whiteboards-'
 
-# Get the list of non-migrated whiteboards for both all geographies, and force authentication a prompt for the first request.
+# Get the list of non-migrated whiteboards for all geographies. Force an authentication prompt for the first request.
 # The account needs at least the SharePoint Administrator role to access the whiteboard data.
 
 Import-Module WhiteboardAdmin
@@ -34,7 +34,7 @@ Get-WhiteboardsForTenant -Geography Europe -IncrementalRunName $NonMigratedRunNa
 Get-WhiteboardsForTenant -Geography Worldwide -IncrementalRunName $NonMigratedRunName_WW 
 Get-WhiteboardsForTenant -Geography Australia -IncrementalRunName $NonMigratedRunName_AU 
 
-# Combine the non-migrated whiteboard data from both Europe and Worldwide into a single collection for further processing.
+# Combine the non-migrated whiteboard data from all geographies into a single collection for further processing.
 $FileContentNonMigrated_All = Get-Content -Path $NonMigratedWhiteboardsFilePath_EU, $NonMigratedWhiteboardsFilePath_WW, $NonMigratedWhiteboardsFilePath_AU | ForEach-Object {
     $_ | ConvertFrom-Json
 }
