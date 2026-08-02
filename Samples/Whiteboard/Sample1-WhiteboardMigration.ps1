@@ -7,11 +7,12 @@
 #require -Module WhiteboardAdmin
 
 # Prepare the environment for the Whiteboard migration report
-$TenantId = "<Your Tenant ID>" 
-$ClientId = "<Your Client ID>" 
-$CertThumbprint = "<Your Certificate Thumbprint>" 
 $LocalFolderPath = "C:\Temp\WhiteboardMigration" # Change this to your preferred local folder path for storing whiteboard migration data.
+$TenantId = "<Your Tenant ID>" # this is required for step 2 
+$ClientId = "<Your Client ID>" # this is required for step 2
+$CertThumbprint = "<Your Certificate Thumbprint>" # this is required for step 2
 
+# Step 1: Retrieve non-migrated whiteboards from different geographies and store them in local files.
 $NonMigratedWhiteboardsFilePath_EU = "$LocalFolderPath\Whiteboards-NonMigrated-EU.txt"
 $NonMigratedRunName_EU = [IO.Path]::GetFileNameWithoutExtension($NonMigratedWhiteboardsFilePath_EU) -replace '^Whiteboards-'
 
@@ -45,6 +46,7 @@ if (@($FileContentNonMigrated_All).Count -eq 0) {
     $FileContentNonMigrated_All 
 }
 
+# Step 2: Connect to Microsoft Graph and resolve the owners of the non-migrated whiteboards to a readable identity (Display Name, UPN, Account Enabled status).
 # Connect to Microsoft Graph using the provided client ID, certificate thumbprint, and tenant ID for authentication.
 Connect-MgGraph -ClientId $ClientId -CertificateThumbprint $CertThumbprint -TenantId $TenantId -NoWelcome
 
